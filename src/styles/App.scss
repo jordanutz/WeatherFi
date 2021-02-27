@@ -1,0 +1,117 @@
+@import "~antd/dist/antd.css";
+
+.weather {
+   min-height: 100vh;
+   padding: 2rem;
+   background-color: #0143bb;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   &__content {
+      background-color: #2152d0;
+      padding: 0 1.5rem 1rem 1.5rem;
+      width: 750px;
+      border-radius: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: auto;
+      max-height: 550px;
+   }
+
+   &__content-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+
+   &__current {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+   }
+
+   &__current-text {
+      font-size: 5.5rem;
+      font-family: "Codec Pro";
+      color: #f1f2f6;
+      letter-spacing: -0.9rem;
+      display: flex;
+      line-height: 1.2;
+      display: flex;
+      justify-content: center;
+   }
+
+   &__form {
+      display: flex !important;
+      justify-content: flex-end;
+   }
+
+   &__details {
+      background-color: #0143bb;
+      padding: 1rem;
+      border-radius: 0.25rem;
+
+      span {
+         color: #a2b0f7;
+         margin-bottom: -2px;
+      }
+   }
+
+   &__card {
+      border-radius: 0.25rem;
+      background-color: #0143bb;
+      border: none;
+      min-height: 175px;
+
+      .ant-card-body {
+         display: flex;
+         flex-direction: column;
+
+         span {
+            color: #a2b0f7;
+         }
+      }
+   }
+
+   .ant-switch-checked {
+      background-color: #a2b0f7;
+
+      span {
+         color: #0143bb;
+         font-weight: 900;
+      }
+   }
+
+   .ant-switch-inner {
+      font-weight: 900;
+      color: #a2b0f7;
+   }
+
+   .ant-input-affix-wrapper {
+      padding: 4px 8px;
+      border-radius: 0.25rem;
+      background-color: #0143bb;
+      border: none;
+   }
+
+   .ant-input {
+      background-color: transparent !important;
+      color: #f1f2f6;
+   }
+
+   .ant-input-prefix {
+      width: 18px;
+      margin-right: 8px !important;
+      svg {
+         fill: #a2b0f7;
+      }
+   }
+}
+
+body input:-internal-autofill-selected {
+   background-color: red !important;
+   padding: 2px 6px !important;
+}

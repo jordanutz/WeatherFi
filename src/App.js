@@ -1,28 +1,12 @@
-import React, { useState } from "react";
-import {
-   Layout,
-   Row,
-   Col,
-   Card,
-   Form,
-   Input,
-   Switch,
-   Button,
-   Typography,
-} from "antd";
-import { CalendarOutlined } from "@ant-design/icons";
-import { ReactComponent as Marker } from "./assets/marker.svg";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import useGeoLocation from "./hooks/useGeoLocation";
+import { Layout, Row, Col, Switch, Typography, Empty, Spin } from "antd";
 
-import { ImDroplet } from "react-icons/im";
-import { AiTwotoneCalendar } from "react-icons/ai";
-import { CgThermostat } from "react-icons/cg";
-import { GiSunglasses } from "react-icons/gi";
-import {
-   TiWeatherDownpour,
-   TiWeatherWindyCloudy,
-   TiWeatherSnow,
-} from "react-icons/ti";
+import Search from "./components/Search";
+import Forecast from "./components/Forecast";
+import Details from "./components/Details";
+import Current from "./components/Current";
+import axios from "axios";
 
 import "./styles/App.scss";
 
@@ -31,305 +15,122 @@ const { Text } = Typography;
 
 const App = () => {
    const [forecast, setForecast] = useState([]);
-   const [location, setLocation] = useState(null);
+   const [location, setLocation] = useState("");
    const [current, setCurrent] = useState(null);
+   const [farenheit, setFarenheit] = useState(true);
+   const [active, setActive] = useState(0);
+   const [retrieving, setRetrieving] = useState(true);
 
-   const getData = (values) => {
+   const userCoordinates = useGeoLocation();
+   const { loaded, permissions } = userCoordinates;
+
+   useEffect(() => {
+      loaded && fetchData();
+   }, [loaded]);
+
+   const fetchData = () => {
       axios
          .get(
-            `https://api.weatherapi.com/v1/forecast.json?key=60a1e58642e34987a6c224405212402&q=${values.location}&days=7&aqi=no&alerts=no`
+            `https://api.weatherapi.com/v1/forecast.json?key=60a1e58642e34987a6c224405212402&q=${userCoordinates.coordinates.lat},${userCoordinates.coordinates.lng}&days=5&aqi=no&alerts=no`
          )
          .then((res) => {
-            setForecast(res.data.forecast.forecastday);
-            setCurrent(res.data.current);
-            setLocation(res.data.location);
+            const { forecast, current, location } = res.data;
+
+            setForecast(forecast.forecastday);
+            setCurrent(current);
+            setLocation(`${location.name}, ${location.region}`);
+            setRetrieving(false);
          })
          .catch((err) => console.log(err));
    };
 
+   const formatDate = (str) => {
+      str = str.split("-");
+      return `${str[1]}•${str[2]}•${str[0]}`;
+   };
+
+   const renderDateText = () => (
+      !active ? "Today" : 
+      active === 1 ? "Tomorrow" : 
+      formatDate(forecast[active].date)
+   );
+
    return (
       <Layout className="weather">
          <Content className="weather__content">
-            <Row
-               className="weather__content-row"
-               style={{ marginBottom: "8px" }}
-            >
-               <Col xs={16} style={{display: 'flex', alignItems: 'center'}}>
-				   <img src={current && current.condition.icon} alt="" style={{marginRight: '8px'}} />
-                  <Text
-                     style={{
-                        display: 'flex', 
-						flexDirection: 'column',
-						lineHeight: 1.15
-                     }}
-                  >
-                     <Text style={{
-                        fontFamily: "Codec Pro",
-                        fontSize: "1.5rem",
-                        letterSpacing: "-.5px",
-                        color: "#a2b0f7",
-                     }}>Today</Text>
-					 <Text style={{
-                        fontSize: ".9rem",
-                        letterSpacing: "-.25px",
-						fontWeight: 800,
-                        color: "#a2b0f7",
-                     }}>Thu | 26 Feb.</Text>
-                     {/* {forecast.length && forecast[0].date} */}
-                  </Text>
-               </Col>
-               <Col xs={8}>
-                  <Form
-                     onFinish={(values) => getData(values)}
-                     className="weather__form"
-                  >
-                     <Form.Item
-                        name="location"
-                        style={{ marginBottom: 0 }}
-                        rules={[
-                           {
-                              required: true,
-                              message: "This field cannot be empty",
-                           },
-                        ]}
-                     >
-                        <Input
-                           prefix={<Marker />}
-                           placeholder="Input a zip code"
-                           value="Lexington, KY"
-                        />
-                     </Form.Item>
-                  </Form>
-               </Col>
-            </Row>
-            <Row className="weather__row">
-               <Col xs={24}>
-                  <Row className="weather__row">
-                     <Col xs={11} className="weather__current">
-                        <Row>
-                           <Col xs={24} style={{ textAlign: "center" }}>
-                              <Text style={{ color: "#a2b0f7" }}>
-                                 {current && current.condition.text}
+            {
+               retrieving && !current ? (
+                  <Spin size="large" />
+               ) : !retrieving && current && (
+                  <>
+                     <Row className="weather__content-row weather__content-row--header">
+                        <Col xs={16} className="weather__content-col">
+                           <img
+                              src={current.condition.icon}
+                              className="weather__current-icon"
+                              alt=""
+                              role="presentation"
+                           />
+                           <Text className="weather__content-text">
+                              <Text className="weather__content-today">
+                                 {renderDateText()}
                               </Text>
-                              <Text className="weather__current-text">
-                                 {current && current.temp_f}
-                                 <Text
-                                    className="weather__current-degree"
-                                    style={{
-                                       fontSize: "4rem",
-                                       color: "#f1f2f6",
-                                       marginLeft: "8px",
-                                    }}
-                                 >
-                                    °
-                                 </Text>
+                              <Text className="weather__content-date">
+                                 {formatDate(forecast[active].date)}
                               </Text>
-                           </Col>
-                        </Row>
-                     </Col>
-                     <Col xs={13} className="weather__details">
-                        <Row style={{ marginBottom: "8px" }}>
-                           <Col
-                              xs={24}
-                              style={{
-                                 display: "flex",
-                                 justifyContent: "flex-end",
-                              }}
-                           >
-                              <Switch
-                                 defaultChecked
-                                 checkedChildren="F°"
-                                 unCheckedChildren="C°"
-                              ></Switch>
-                           </Col>
-                        </Row>
-
-                        <Row style={{ padding: "0 1rem" }}>
-                           <Col
-                              xs={12}
-                              style={{
-                                 marginBottom: "8px",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                           >
-                              <CgThermostat
-                                 style={{ color: "#a2b0f7", fontSize: "18px" }}
-                              />
-                              <div
-                                 style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    paddingLeft: "12px",
-                                 }}
-                              >
-                                 <Text style={{ fontWeight: 800 }}>
-                                    Feels Like
-                                 </Text>
-                                 <Text>{current && current.feelslike_f}°</Text>
-                              </div>
-                           </Col>
-                           <Col
-                              xs={12}
-                              style={{
-                                 marginBottom: "8px",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                           >
-                              <TiWeatherDownpour
-                                 style={{ color: "#a2b0f7", fontSize: "20px" }}
-                              />
-                              <div
-                                 style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    paddingLeft: "12px",
-                                 }}
-                              >
-                                 <Text style={{ fontWeight: 800 }}>
-                                    Chance of Rain
-                                 </Text>
-                                 <Text>
-                                    {forecast.length &&
-                                       forecast[0].day.daily_chance_of_rain}
-                                    %
-                                 </Text>
-                              </div>
-                           </Col>
-                           <Col
-                              xs={12}
-                              style={{
-                                 marginBottom: "8px",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                           >
-                              <ImDroplet style={{ color: "#a2b0f7" }} />
-                              <div
-                                 style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    paddingLeft: "12px",
-                                 }}
-                              >
-                                 <Text style={{ fontWeight: 800 }}>
-                                    Humidity
-                                 </Text>
-                                 <Text>{current && current.humidity}% %</Text>
-                              </div>
-                           </Col>
-                           <Col
-                              xs={12}
-                              style={{
-                                 marginBottom: "8px",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                           >
-                              <TiWeatherWindyCloudy
-                                 style={{ color: "#a2b0f7", fontSize: "20px" }}
-                              />
-                              <div
-                                 style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    paddingLeft: "12px",
-                                 }}
-                              >
-                                 <Text style={{ fontWeight: 800 }}>
-                                    Wind (mph)
-                                 </Text>
-                                 <Text>{current && current.wind_mph}%</Text>
-                              </div>
-                           </Col>
-                           <Col
-                              xs={12}
-                              style={{
-                                 marginBottom: "8px",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                           >
-                              <GiSunglasses
-                                 style={{ color: "#a2b0f7", fontSize: "18px" }}
-                              />
-                              <div
-                                 style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    paddingLeft: "12px",
-                                 }}
-                              >
-                                 <Text style={{ fontWeight: 800 }}>UV</Text>
-                                 <Text>{current && current.uv}%</Text>
-                              </div>
-                           </Col>
-                           <Col
-                              xs={12}
-                              style={{
-                                 marginBottom: "8px",
-                                 display: "flex",
-                                 alignItems: "center",
-                              }}
-                           >
-                              <TiWeatherSnow
-                                 style={{ color: "#a2b0f7", fontSize: "18px" }}
-                              />
-                              <div
-                                 style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    paddingLeft: "12px",
-                                 }}
-                              >
-                                 <Text style={{ fontWeight: 800 }}>
-                                    Chance of Snow
-                                 </Text>
-                                 <Text>
-                                    {forecast.length &&
-                                       forecast[0].day.daily_chance_of_snow}
-                                    %
-                                 </Text>
-                              </div>
-                           </Col>
-                        </Row>
-                     </Col>
-                  </Row>
-               </Col>
-               <Col xs={24} style={{ marginTop: "24px" }}>
-                  <Row gutter={16}>
-                     {forecast.length &&
-                        forecast.map((daily, index) => {
-                           return (
-                              <Col xs={8} key={index}>
-                                 <Card className="weather__card">
-                                    <Text>Date: {daily.date}</Text>
-                                    <Text>
-                                       Avg Temp: {daily.day.avgtemp_f}°
-                                    </Text>
-                                    <Text>
-                                       Max Temp: {daily.day.maxtemp_f}°
-                                    </Text>
-                                    <Text>
-                                       Min Temp: {daily.day.mintemp_f}°
-                                    </Text>
-                                    {/* <Text>Date: {daily.day.condition.icon}</Text> */}
-                                 </Card>
+                           </Text>
+                        </Col>
+                        <Col xs={8}>
+                           <Search fetchData={fetchData} />
+                        </Col>
+                     </Row>
+                     <Row className="weather__row weather__row--loading weather__row weather__row--body">
+                        <Col xs={24}>
+                           <Row className="weather__row">
+                              <Col xs={11} className="weather__current">
+                                 <Current
+                                    active={active}
+                                    current={current}
+                                    farenheit={farenheit}
+                                    forecast={forecast}
+                                 />
                               </Col>
-                           );
-                        })}
-                  </Row>
-               </Col>
-            </Row>
+                              <Col xs={13} className="weather__details">
+                                 <Row>
+                                    <Col className="weather__details-col" xs={24}>
+                                       <Switch
+                                          defaultChecked
+                                          checkedChildren="F°"
+                                          unCheckedChildren="C°"
+                                          onChange={() => setFarenheit(!farenheit)}
+                                       />
+                                    </Col>
+                                 </Row>
+                                 <Details
+                                    current={current}
+                                    farenheit={farenheit}
+                                    forecast={forecast}
+                                    active={active}
+                                 />
+                              </Col>
+                           </Row>
+                        </Col>
+                        <Col xs={24} className="weather__forecast">
+                           <Forecast
+                              forecast={forecast}
+                              farenheit={farenheit}
+                              formatDate={formatDate}
+                              active={active}
+                              setActive={setActive}
+                           />
+                        </Col>
+                     </Row>
+                  </>
+               )
+            }
          </Content>
       </Layout>
    );
 };
 
 export default App;
-
-// Icons
-{
-   /* <CalendarOutlined /> */
-}

@@ -1,23 +1,46 @@
 @import "~antd/dist/antd.css";
 
+$primary-bg: #0a41ae;
+$secondary-bg: #012f89;
+$accent: #ffe08c;
+
 .weather {
    min-height: 100vh;
    padding: 2rem;
-   background-color: #0143bb;
+   background-color: $primary-bg;
    display: flex;
    justify-content: center;
    align-items: center;
 
+   &__row {
+      width: 100%;
+
+      &--header {
+         height: 64px;
+      }
+
+      &--body {
+         height: 444px;
+      }
+
+      &--loading {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+   }
+
    &__content {
-      background-color: #2152d0;
-      padding: 0 1.5rem 1rem 1.5rem;
+      background-color: $secondary-bg;
+      padding: 1.5rem;
       width: 750px;
       border-radius: 0.25rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: auto;
-      max-height: 550px;
+      align-items: center;
+      min-height: 575px;
+      max-height: 575px;
    }
 
    &__content-row {
@@ -25,34 +48,83 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-bottom: 8px;
+   }
+
+   .weather &__content-col {
+      display: flex;
+      align-items: center;
+   }
+
+   &__content-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+   }
+
+   &__content-today {
+      font-size: 1.25rem;
+      color: #a2b0f7;
+      font-weight: 800;
+   }
+
+   &__content-date {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #a2b0f7;
    }
 
    &__current {
       display: flex;
       justify-content: center;
       flex-direction: column;
+      text-align: center;
+   }
+
+   &__current-condition {
+      color: #a2b0f7;
+      font-size: 1rem;
+      text-transform: Capitalize;
+      margin-bottom: 16px;
+      font-weight: 600;
    }
 
    &__current-text {
-      font-size: 5.5rem;
-      font-family: "Codec Pro";
+      font-size: 4.5rem;
+      font-family: "Khula", sans-serif;
       color: #f1f2f6;
-      letter-spacing: -0.9rem;
       display: flex;
       line-height: 1.2;
       display: flex;
       justify-content: center;
+      font-weight: 800;
+      margin-top: 4px;
    }
 
-   &__form {
-      display: flex !important;
+   &__current-degree {
+      font-size: 3rem;
+      color: #f1f2f6;
+      margin-left: 8px;
+   }
+
+   .weather &__form {
+      display: flex;
       justify-content: flex-end;
    }
 
+   .weather &__form-item {
+      margin-bottom: 0;
+      width: 100%;
+   }
+
    &__details {
-      background-color: #0143bb;
-      padding: 1rem;
+      background-color: $primary-bg;
+      padding: 1rem 1rem 0.25rem 1rem;
       border-radius: 0.25rem;
+
+      > .ant-row {
+         margin-bottom: 8px;
+      }
 
       span {
          color: #a2b0f7;
@@ -60,19 +132,49 @@
       }
    }
 
+   &__details-row {
+      padding: 0 1rem;
+   }
+
+   &__details-col {
+      display: flex;
+      justify-content: flex-end;
+
+      &--container {
+         justify-content: flex-start;
+         margin-bottom: 8px;
+         align-items: center;
+      }
+   }
+
+   &__details-icon {
+      color: $accent;
+      font-size: 20px;
+   }
+
+   &__details-label {
+      font-weight: 800;
+   }
+
    &__card {
-      border-radius: 0.25rem;
-      background-color: #0143bb;
-      border: none;
-      min-height: 175px;
+      &:hover,
+      &--active {
+         background-color: #a2b0f7;
 
-      .ant-card-body {
-         display: flex;
-         flex-direction: column;
-
-         span {
-            color: #a2b0f7;
+         .ant-card-body .ant-typography {
+            color: $primary-bg !important;
          }
+
+         .ant-divider.ant-divider-vertical {
+            border-left: 2px solid $primary-bg !important;
+         }
+      }
+   }
+
+   &__space {
+      padding-left: 8px;
+      .ant-space-item {
+         margin-bottom: -2px !important;
       }
    }
 
@@ -80,7 +182,7 @@
       background-color: #a2b0f7;
 
       span {
-         color: #0143bb;
+         color: $primary-bg;
          font-weight: 900;
       }
    }
@@ -93,7 +195,7 @@
    .ant-input-affix-wrapper {
       padding: 4px 8px;
       border-radius: 0.25rem;
-      background-color: #0143bb;
+      background-color: $primary-bg;
       border: none;
    }
 
@@ -106,12 +208,106 @@
       width: 18px;
       margin-right: 8px !important;
       svg {
-         fill: #a2b0f7;
+         fill: $accent;
+      }
+   }
+
+   &__forecast {
+      margin-top: 24px;
+   }
+
+   &__forecast-label {
+      font-size: 0.9rem;
+      letter-spacing: -0.25px;
+      font-weight: 800;
+      text-align: center;
+      color: #a2b0f7;
+      margin-bottom: 8px;
+   }
+
+   &__forecast-avg {
+      font-size: 2rem;
+      font-family: "Khula", sans-serif;
+      color: #f1f2f6 !important;
+      display: flex;
+      line-height: 1.2;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-weight: 800;
+   }
+
+   &__forecast-degree {
+      font-size: 1.3rem;
+      margin-left: 4px;
+   }
+
+   &__forecast-space {
+      .ant-space-item {
+         margin-right: 4px !important;
+      }
+   }
+
+   &__forecast-max {
+      font-size: 1.05rem;
+      font-weight: 800;
+      font-family: "Khula", sans-serif;
+   }
+
+   &__forecast-min {
+      font-size: 1.05rem;
+      color: #a2b0f7b5 !important;
+      font-weight: 800;
+      font-family: "Khula", sans-serif;
+   }
+
+   .ant-divider-vertical {
+      border-left: 2px solid #a2b0f7 !important;
+      height: 1.1rem;
+      top: -4px;
+   }
+
+   &__card-icon {
+      width: 64px;
+      margin: 0px auto;
+      background: $secondary-bg;
+      border-radius: 50%;
+      margin-bottom: 16px;
+      padding: 4px;
+   }
+
+   &__current-icon {
+      margin-right: 16px;
+      width: 64px;
+      border-radius: 50%;
+      padding: 4px;
+      background-color: $primary-bg;
+   }
+
+   &__empty {
+      height: calc(575px - 120px);
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      .ant-empty-description {
+         color: #fff;
       }
    }
 }
 
-body input:-internal-autofill-selected {
-   background-color: red !important;
-   padding: 2px 6px !important;
+.ant-tooltip-inner {
+   font-size: 0.8rem;
+   padding: 6px 12px;
+   background-color: #a2b0f7;
+   color: #012f89;
+}
+
+.ant-tooltip-arrow-content {
+   background-color: #a2b0f7 !important;
+}
+
+.ant-spin-dot-item {
+   background-color: $accent;
 }

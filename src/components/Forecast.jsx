@@ -14,6 +14,7 @@ const Forecast = ({
    <Row gutter={16}>
       {forecast.map((daily, index) => (
          <ForecastCard
+            key={index}
             {...daily}
             index={index}
             forecast={forecast}

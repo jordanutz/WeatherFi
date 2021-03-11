@@ -228,7 +228,6 @@ $accent: #ffe08c;
    &__forecast-avg {
       font-size: 2rem;
       font-family: "Khula", sans-serif;
-      color: #f1f2f6 !important;
       display: flex;
       line-height: 1.2;
       display: flex;
@@ -347,4 +346,10 @@ $accent: #ffe08c;
       color: #012f89;
       font-weight: 600;
    }
+}
+
+.ant-spin-text {
+   margin-top: 8px;
+   color: $accent;
+   font-weight: 600;
 }

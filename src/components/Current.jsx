@@ -4,13 +4,16 @@ import { Row, Col, Typography } from "antd";
 const { Text } = Typography;
 
 const Current = ({ active, current, farenheit, forecast }) => {
-
-   const renderCurrent = () => (
-      active && farenheit ? forecast[active].day.avgtemp_f :
-      active && !farenheit ? forecast[active].day.avgtemp_c :
-      current && farenheit ? current.temp_f : 
-      current && !farenheit ? current.temp_c : null
-   ); 
+   const renderCurrent = () =>
+      active && farenheit
+         ? forecast[active].day.avgtemp_f
+         : active && !farenheit
+         ? forecast[active].day.avgtemp_c
+         : current && farenheit
+         ? current.temp_f
+         : current && !farenheit
+         ? current.temp_c
+         : null;
 
    return (
       <Row>

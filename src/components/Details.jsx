@@ -20,10 +20,12 @@ const Details = ({ active, current, farenheit, forecast }) => (
          <CgThermostat className="weather__details-icon" />
          <Space className="weather__space" direction="vertical" size="small">
             <Text className="weather__details-label">Feels Like</Text>
-            <Text>{
-               active ? "N/A" : 
-               current && farenheit ? current.feelslike_f : current.feelslike_c
-            }
+            <Text>
+               {active
+                  ? "N/A"
+                  : current && farenheit
+                  ? current.feelslike_f
+                  : current.feelslike_c}
                °
             </Text>
          </Space>
@@ -35,10 +37,7 @@ const Details = ({ active, current, farenheit, forecast }) => (
          <TiWeatherDownpour className="weather__details-icon" />
          <Space className="weather__space" direction="vertical" size="small">
             <Text className="weather__details-label">Chance of Rain</Text>
-            <Text>
-               {forecast[active].day.daily_chance_of_rain}
-               %
-            </Text>
+            <Text>{forecast[active].day.daily_chance_of_rain}%</Text>
          </Space>
       </Col>
       <Col
@@ -48,9 +47,7 @@ const Details = ({ active, current, farenheit, forecast }) => (
          <ImDroplet className="weather__details-icon" />
          <Space className="weather__space" direction="vertical" size="small">
             <Text className="weather__details-label">Humidity</Text>
-            <Text>
-               {forecast[active].day.avghumidity}%
-            </Text>
+            <Text>{forecast[active].day.avghumidity}%</Text>
          </Space>
       </Col>
       <Col
@@ -60,9 +57,7 @@ const Details = ({ active, current, farenheit, forecast }) => (
          <TiWeatherWindyCloudy className="weather__details-icon" />
          <Space className="weather__space" direction="vertical" size="small">
             <Text className="weather__details-label">Wind (mph)</Text>
-            <Text>
-               {forecast[active].day.maxwind_mph}
-            </Text>
+            <Text>{forecast[active].day.maxwind_mph}</Text>
          </Space>
       </Col>
       <Col
@@ -82,10 +77,7 @@ const Details = ({ active, current, farenheit, forecast }) => (
          <TiWeatherSnow className="weather__details-icon" />
          <Space className="weather__space" direction="vertical" size="small">
             <Text className="weather__details-label">Chance of Snow</Text>
-            <Text>
-               {forecast[active].day.daily_chance_of_snow}
-               %
-            </Text>
+            <Text>{forecast[active].day.daily_chance_of_snow}%</Text>
          </Space>
       </Col>
    </Row>

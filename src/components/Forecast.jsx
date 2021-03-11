@@ -1,22 +1,29 @@
-import React from 'react';
-import { Row } from 'antd';
+import React from "react";
+import { Row } from "antd";
 
 import ForecastCard from "./ForecastCard";
 
-const Forecast = ({ forecast, farenheit, active, setActive, formatDate }) => (
+const Forecast = ({
+   forecast,
+   farenheit,
+   formatDate,
+   active,
+   setActive,
+   days,
+}) => (
    <Row gutter={16}>
-      {forecast.length &&
-         forecast.map((daily, index) => 
-            <ForecastCard 
-               {...daily} 
-               index={index} 
-               formatDate={formatDate}
-               forecast={forecast} 
-               farenheit={farenheit}
-               active={active}
-               setActive={setActive} 
-            />
-         )}
+      {forecast.map((daily, index) => (
+         <ForecastCard
+            {...daily}
+            index={index}
+            forecast={forecast}
+            formatDate={formatDate}
+            farenheit={farenheit}
+            active={active}
+            setActive={setActive}
+            days={days}
+         />
+      ))}
    </Row>
 );
 

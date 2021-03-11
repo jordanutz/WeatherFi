@@ -49,7 +49,7 @@ const Details = ({ active, current, farenheit, forecast }) => (
          <Space className="weather__space" direction="vertical" size="small">
             <Text className="weather__details-label">Humidity</Text>
             <Text>
-               {forecast[active].day.avghumidity}
+               {forecast[active].day.avghumidity}%
             </Text>
          </Space>
       </Col>

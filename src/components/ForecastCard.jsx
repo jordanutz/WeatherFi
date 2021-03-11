@@ -1,12 +1,12 @@
 import React from "react";
 import { Col, Card, Typography, Space, Divider } from "antd";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const { Text } = Typography;
 
 const StyledCard = styled(Card)`
    border-radius: 0.25rem;
-   background-color: ${({ active }) => active ? '#a2b0f7;' : '#0a41ae;'}
+   background-color: ${({ active }) => (active ? "#a2b0f7;" : "#0a41ae;")}
    border: none;
    min-height: 175px;
    cursor: pointer;
@@ -20,17 +20,27 @@ const StyledCard = styled(Card)`
    &:hover {
       background-color: #a2b0f7;
    }
-`
+`;
 
 const StyledText = styled(Text)`
    font-size: 1rem;
    font-weight: 800;
    font-family: "Khula", sans-serif;
-   color: ${({active}) => active ? '#0a41ae;' : '#a2b0f7;'}
-   text-align: ${({ centered }) => centered && 'center;' }
-`
+   color: ${({ active }) => (active ? "#0a41ae;" : "#a2b0f7;")}
+   text-align: ${({ centered }) => centered && "center;"}
+   margin-bottom: 4px;
+}`;
 
-const ForecastCard = ({ day, date, index, formatDate, farenheit, active, setActive }) => (
+const ForecastCard = ({
+   day,
+   days,
+   date,
+   index,
+   farenheit,
+   active,
+   setActive,
+   formatDate,
+}) => (
    <Col xs={6} key={index}>
       <StyledCard onClick={() => setActive(index)} active={active === index}>
          <img
@@ -39,7 +49,9 @@ const ForecastCard = ({ day, date, index, formatDate, farenheit, active, setActi
             alt=""
             role="presentation"
          />
-         <StyledText active={active === index} centered>{formatDate(date)}</StyledText>
+         <StyledText active={active === index} centered>
+            {days[new Date(formatDate(date)).getDay()]}
+         </StyledText>
          <Text className="weather__forecast-avg">
             {farenheit ? day.avgtemp_f : day.avgtemp_c}
             <Text className="weather__forecast-degree">°</Text>

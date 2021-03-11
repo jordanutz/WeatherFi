@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import useGeoLocation from "./hooks/useGeoLocation";
 import { Layout, Row, Col, Switch, Typography, Empty, Spin } from "antd";
+
+import useGeoLocation from "./hooks/useGeoLocation";
 
 import Search from "./components/Search";
 import Forecast from "./components/Forecast";
@@ -22,7 +23,7 @@ const App = () => {
    const [retrieving, setRetrieving] = useState(true);
 
    const userCoordinates = useGeoLocation();
-   const { loaded, permissions } = userCoordinates;
+   const { loaded } = userCoordinates;
 
    useEffect(() => {
       loaded && fetchData();
@@ -33,7 +34,7 @@ const App = () => {
          .get(
             `https://api.weatherapi.com/v1/forecast.json?key=60a1e58642e34987a6c224405212402&q=${userCoordinates.coordinates.lat},${userCoordinates.coordinates.lng}&days=5&aqi=no&alerts=no`
          )
-         .then((res) => {
+         .then(res => {
             const { forecast, current, location } = res.data;
 
             setForecast(forecast.forecastday);
@@ -44,15 +45,24 @@ const App = () => {
          .catch((err) => console.log(err));
    };
 
-   const formatDate = (str) => {
+   const formatDate = str => {
       str = str.split("-");
-      return `${str[1]}•${str[2]}•${str[0]}`;
+      return `${str[1]}/${str[2]}/${str[0]}`;
    };
+
+   const days = [
+      "Sunday", 
+      "Monday", 
+      "Tuesday", 
+      "Wednesday", 
+      "Thursday", 
+      "Friday", 
+      "Saturday"
+   ];
 
    const renderDateText = () => (
       !active ? "Today" : 
-      active === 1 ? "Tomorrow" : 
-      formatDate(forecast[active].date)
+      days[new Date(formatDate(forecast[active].date)).getDay()]
    );
 
    return (
@@ -81,7 +91,10 @@ const App = () => {
                            </Text>
                         </Col>
                         <Col xs={8}>
-                           <Search fetchData={fetchData} />
+                           <Search 
+                              fetchData={fetchData}
+                              location={location}
+                           />
                         </Col>
                      </Row>
                      <Row className="weather__row weather__row--loading weather__row weather__row--body">
@@ -117,9 +130,10 @@ const App = () => {
                         </Col>
                         <Col xs={24} className="weather__forecast">
                            <Forecast
+                              days={days}
                               forecast={forecast}
-                              farenheit={farenheit}
                               formatDate={formatDate}
+                              farenheit={farenheit}
                               active={active}
                               setActive={setActive}
                            />

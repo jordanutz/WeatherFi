@@ -29,6 +29,7 @@ $accent-three: #00a8bf;
    }
 
    &__content {
+      position: relative;
       background-color: $secondary-bg;
       padding: 1.5rem;
       width: 100%;
@@ -38,6 +39,24 @@ $accent-three: #00a8bf;
       flex-direction: column;
       min-height: 575px;
       max-height: 575px;
+
+      .ant-spin-text {
+         margin-top: 8px;
+         color: $accent;
+         font-weight: 600;
+      }
+      
+      .ant-spin-spinning {
+         position: absolute;
+         top: 0;
+         left: 0;
+         bottom: 0;
+         right: 0;
+         display: flex;
+         align-items: center;
+         flex-direction: column;
+         justify-content: center;
+      }
    }
 
    &__content-row {
@@ -382,10 +401,4 @@ $accent-three: #00a8bf;
       color: #012f89;
       font-weight: 600;
    }
-}
-
-.ant-spin-text {
-   margin-top: 8px;
-   color: $accent;
-   font-weight: 600;
 }

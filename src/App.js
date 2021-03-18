@@ -32,7 +32,7 @@ const App = () => {
    const fetchData = (coordinates = null) => {
       axios
          .get(
-            `https://api.weatherapi.com/v1/forecast.json?key="60a1e58642e34987a6c224405212402"&q=${
+            `https://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_KEY}&q=${
                Object.keys(current).length === 0
                   ? userCoordinates.coordinates.lat
                   : coordinates.lat

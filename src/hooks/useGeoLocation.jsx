@@ -11,6 +11,7 @@ const useGeoLocation = () => {
    });
 
    const onSuccess = (location) => {
+      console.log('on success', location)
       setLocation({
          permissions: true,
          loaded: true,

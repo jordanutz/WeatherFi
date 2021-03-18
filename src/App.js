@@ -32,7 +32,7 @@ const App = () => {
    const fetchData = (coordinates = null) => {
       axios
          .get(
-            `https://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_KEY}&q=${
+            `https://api.weatherapi.com/v1/forecast.json?key="60a1e58642e34987a6c224405212402"&q=${
                Object.keys(current).length === 0
                   ? userCoordinates.coordinates.lat
                   : coordinates.lat
@@ -111,7 +111,7 @@ const App = () => {
                      <Row className="weather__row weather__row--loading weather__row weather__row--body">
                         <Col xs={24}>
                            <Row className="weather__row">
-                              <Col xs={11} className="weather__current">
+                              <Col xs={12} className="weather__current">
                                  <Current
                                     active={active}
                                     current={current}
@@ -119,7 +119,7 @@ const App = () => {
                                     forecast={forecast}
                                  />
                               </Col>
-                              <Col xs={13} className="weather__details">
+                              <Col xs={12} className="weather__details">
                                  <Row>
                                     <Col
                                        className="weather__details-col"

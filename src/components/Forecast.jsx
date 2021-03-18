@@ -1,6 +1,5 @@
 import React from "react";
 import { Row } from "antd";
-
 import ForecastCard from "./ForecastCard";
 
 const Forecast = ({
@@ -11,8 +10,8 @@ const Forecast = ({
    setActive,
    days,
 }) => (
-   <Row gutter={16}>
-      {forecast.map((daily, index) => (
+   <Row gutter={24}>
+      {forecast.filter((daily, index) => index < 3).map((daily, index) => (
          <ForecastCard
             key={index}
             {...daily}

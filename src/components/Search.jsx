@@ -46,6 +46,7 @@ const Search = ({ fetchData, location, setRequesting }) => {
                   showSearch
                   bordered={false}
                   placeholder="Search by Location"
+                  notFoundContent={null}
                   onSearch={(value) => setUserInput(value)}
                   onSelect={(value) => {
                      let selected = options.find(

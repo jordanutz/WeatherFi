@@ -1,5 +1,6 @@
-import React from "react";
-import { Row, Col, Space, Typography } from "antd";
+import React, { useContext } from "react";
+import { WeatherContext } from "../context";
+
 import { ImDroplet } from "react-icons/im";
 import { CgThermostat } from "react-icons/cg";
 import { GiSunglasses } from "react-icons/gi";
@@ -9,78 +10,64 @@ import {
    TiWeatherSnow,
 } from "react-icons/ti";
 
-const { Text } = Typography;
+const Details = () => {
+   const {
+      active,
+      state: { current, farenheit, forecast },
+   } = useContext(WeatherContext);
 
-const Details = ({ active, current, farenheit, forecast }) => (
-   <Row className="weather__details-row">
-      <Col
-         xs={12}
-         className="weather__details-col weather__details-col--container"
-      >
-         <CgThermostat className="weather__details-icon" />
-         <Space className="weather__space" direction="vertical" size="small">
-            <Text className="weather__details-label">Feels Like</Text>
-            <Text>
-               {active
-                  ? "N/A"
-                  : current && farenheit
-                  ? current.feelslike_f
-                  : current.feelslike_c}
-               °
-            </Text>
-         </Space>
-      </Col>
-      <Col
-         xs={12}
-         className="weather__details-col weather__details-col--container"
-      >
-         <TiWeatherDownpour className="weather__details-icon" />
-         <Space className="weather__space" direction="vertical" size="small">
-            <Text className="weather__details-label">Chance of Rain</Text>
-            <Text>{forecast[active].day.daily_chance_of_rain}%</Text>
-         </Space>
-      </Col>
-      <Col
-         xs={12}
-         className="weather__details-col weather__details-col--container"
-      >
-         <ImDroplet className="weather__details-icon" />
-         <Space className="weather__space" direction="vertical" size="small">
-            <Text className="weather__details-label">Humidity</Text>
-            <Text>{forecast[active].day.avghumidity}%</Text>
-         </Space>
-      </Col>
-      <Col
-         xs={12}
-         className="weather__details-col weather__details-col--container"
-      >
-         <TiWeatherWindyCloudy className="weather__details-icon" />
-         <Space className="weather__space" direction="vertical" size="small">
-            <Text className="weather__details-label">Wind (mph)</Text>
-            <Text>{forecast[active].day.maxwind_mph}</Text>
-         </Space>
-      </Col>
-      <Col
-         xs={12}
-         className="weather__details-col weather__details-col--container"
-      >
-         <GiSunglasses className="weather__details-icon" />
-         <Space className="weather__space" direction="vertical" size="small">
-            <Text className="weather__details-label">UV</Text>
-            <Text>{forecast[active].day.uv}</Text>
-         </Space>
-      </Col>
-      <Col
-         xs={12}
-         className="weather__details-col weather__details-col--container"
-      >
-         <TiWeatherSnow className="weather__details-icon" />
-         <Space className="weather__space" direction="vertical" size="small">
-            <Text className="weather__details-label">Chance of Snow</Text>
-            <Text>{forecast[active].day.daily_chance_of_snow}%</Text>
-         </Space>
-      </Col>
-   </Row>
-);
+   const feelsLike = active
+      ? "N/A"
+      : current && farenheit
+      ? current.feelslike_f
+      : current.feelslike_c;
+
+   return (
+      <section className="weather__details">
+         <section className="weather__detail">
+            <CgThermostat className="weather__details-icon" />
+            <section className="weather__details-item">
+               <span className="weather__details-label">Feels Like</span>
+               <span>{feelsLike}°</span>
+            </section>
+         </section>
+         <section className="weather__detail">
+            <TiWeatherDownpour className="weather__details-icon" />
+            <section className="weather__details-item">
+               <span className="weather__details-label">Chance of Rain</span>
+               <span>{forecast[active].day.daily_chance_of_rain}%</span>
+            </section>
+         </section>
+         <section className="weather__detail">
+            <ImDroplet className="weather__details-icon" />
+            <section className="weather__details-item">
+               <span className="weather__details-label">Humidity</span>
+               <span>{forecast[active].day.avghumidity}%</span>
+            </section>
+         </section>
+         <section className="weather__detail">
+            <TiWeatherWindyCloudy className="weather__details-icon" />
+            <section className="weather__details-item">
+               <span className="weather__details-label">Wind (mph)</span>
+               <span>{forecast[active].day.maxwind_mph}</span>
+            </section>
+         </section>
+         <section className="weather__detail">
+            <GiSunglasses className="weather__details-icon" />
+            <section className="weather__details-item">
+               <span className="weather__details-label">UV</span>
+               <span>{forecast[active].day.uv}</span>
+            </section>
+         </section>
+         <section className="weather__detail">
+            <TiWeatherSnow className="weather__details-icon" />
+            <section className="weather__details-item">
+               <span className="weather__details-label">Chance of Snow</span>
+               <span>{forecast[active].day.daily_chance_of_snow}%</span>
+            </section>
+         </section>
+      </section>
+   );
+};
 
 export default Details;

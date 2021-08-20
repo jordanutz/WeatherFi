@@ -1,30 +1,20 @@
-import React from "react";
-import { Row } from "antd";
-import ForecastCard from "./ForecastCard";
+import React, { useContext } from "react";
+import { WeatherContext } from "../context";
 
-const Forecast = ({
-   forecast,
-   farenheit,
-   formatDate,
-   active,
-   setActive,
-   days,
-}) => (
-   <Row gutter={24}>
-      {forecast.filter((daily, index) => index < 3).map((daily, index) => (
-         <ForecastCard
-            key={index}
-            {...daily}
-            index={index}
-            forecast={forecast}
-            formatDate={formatDate}
-            farenheit={farenheit}
-            active={active}
-            setActive={setActive}
-            days={days}
-         />
-      ))}
-   </Row>
-);
+import Card from "./Card";
+
+const Forecast = () => {
+   const { state } = useContext(WeatherContext);
+
+   return (
+      <section className="weather__forecast">
+         {state.forecast
+            .filter((_daily, index) => index < 3)
+            .map((daily, index) => (
+               <Card key={index} {...state} {...daily} index={index} />
+            ))}
+      </section>
+   );
+};
 
 export default Forecast;

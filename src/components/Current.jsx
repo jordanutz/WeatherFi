@@ -1,9 +1,14 @@
-import React from "react";
-import { Row, Col, Typography } from "antd";
+import React, { useContext } from "react";
+import { WeatherContext } from "../context";
 
-const { Text } = Typography;
+const Current = () => {
+   const {
+      active,
+      farenheit,
+      state: { current, forecast },
+   } = useContext(WeatherContext);
+   const currentCondition = current.condition.text;
 
-const Current = ({ active, current, farenheit, forecast }) => {
    const renderCurrent = () =>
       active && farenheit
          ? forecast[active].day.avgtemp_f
@@ -16,17 +21,15 @@ const Current = ({ active, current, farenheit, forecast }) => {
          : null;
 
    return (
-      <Row>
-         <Col xs={24}>
-            <Text className="weather__current-condition">
-               {current.condition.text}
-            </Text>
-            <Text className="weather__current-text">
-               {renderCurrent()}
-               <Text className="weather__current-degree">°</Text>
-            </Text>
-         </Col>
-      </Row>
+      <section className="weather__current">
+         <section className="weather__current-condition">
+            {currentCondition}
+         </section>
+         <section className="weather__current-text">
+            {renderCurrent()}
+            <span className="weather__current-degree">°</span>
+         </section>
+      </section>
    );
 };
 

@@ -11,7 +11,7 @@
 -  Search recommendations populate depending on the query captured from the user.
 -  Loading states leveraged while request is waiting to be resolved.
 -  Cards used to render the three day forecast, active defaulting to current day. ​
--  Feature allows user to toggle between displaying the details in Celsius or Fahrenheit.
+-  Additional feature allows user to toggle between displaying details in Celsius or Fahrenheit.
 
 ## Toolbox
 

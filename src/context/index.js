@@ -16,7 +16,6 @@ const WeatherProvider = ({ children }) => {
    const [active, setActive] = useState(0);
 
    const fetchForecast = (coordinates = "27.7676, -82.6403") => {
-      console.log(coordinates);
       const url = `https://api.weatherapi.com/v1/forecast.json?key=60a1e58642e34987a6c224405212402&q=${coordinates}&days=5&aqi=no&alerts=no`;
 
       axios

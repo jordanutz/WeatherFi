@@ -8,12 +8,18 @@ import Search from "./Search";
 const Header = () => {
    const {
       active,
-      state: { current, forecast },
+      state: { current, forecast, loaded },
    } = useContext(WeatherContext);
 
-   const currentDay = getDay();
-   const formattedDate = formatDate(forecast[active].date);
-   const icon = current.condition.icon;
+   let currentDay;
+   let formattedDate;
+   let icon;
+
+   if (loaded) {
+      currentDay = getDay();
+      formattedDate = formatDate(forecast[active].date);
+      icon = current.condition.icon;
+   }
 
    return (
       <header className="weather__header">
@@ -29,7 +35,7 @@ const Header = () => {
                <span className="weather__header-date">{formattedDate}</span>
             </section>
          </section>
-         <Search />
+         {loaded && <Search />}
       </header>
    );
 };

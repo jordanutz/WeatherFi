@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { WeatherContext } from "../context";
 import { Form, Tooltip, Select } from "antd";
 import { ReactComponent as Marker } from "../assets/marker.svg";

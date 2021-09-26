@@ -11,13 +11,13 @@ const Current = () => {
 
    const renderCurrent = () =>
       active && farenheit
-         ? forecast[active].day.avgtemp_f
+         ? Math.round(forecast[active].day.avgtemp_f)
          : active && !farenheit
-         ? forecast[active].day.avgtemp_c
+         ? Math.round(forecast[active].day.avgtemp_c)
          : current && farenheit
-         ? current.temp_f
+         ? Math.round(current.temp_f)
          : current && !farenheit
-         ? current.temp_c
+         ? Math.round(current.temp_c)
          : null;
 
    return (

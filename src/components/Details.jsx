@@ -13,14 +13,17 @@ import {
 const Details = () => {
    const {
       active,
-      state: { current, farenheit, forecast },
+      farenheit,
+      state: { current, forecast },
    } = useContext(WeatherContext);
+   console.log(current, farenheit);
 
    const feelsLike = active
       ? "N/A"
       : current && farenheit
       ? current.feelslike_f
       : current.feelslike_c;
+   console.log(feelsLike);
 
    return (
       <section className="weather__details">
